@@ -1,1 +1,11 @@
+org\tesis\xs\config\ConfigInitialDaoImp.class
+org\tesis\xs\config\db\DriverManager.class
+org\tesis\util\jakarta\net\rest\jerset\client\JerseyServiceInterface.class
+org\tesis\xs\config\ConfigInitialGeneralServlet.class
 org\tesis\util\jakarta\net\rest\jerset\client\JerseyClientGenery$3.class
+org\tesis\util\jakarta\net\rest\jerset\client\JerseyMethodEnum.class
+org\tesis\util\jakarta\net\rest\jerset\client\JerseyClientGenery.class
+org\tesis\xs\config\jersey\JerseyClient.class
+org\tesis\util\jakarta\net\rest\jerset\client\JerseyClientGenery$2.class
+org\tesis\util\jakarta\net\rest\jerset\client\JerseyClientGenery$1.class
+org\tesis\util\net\URIUtil.class

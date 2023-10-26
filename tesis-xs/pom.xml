@@ -32,20 +32,21 @@
 		<maven.deploy.plugin.version>3.0.0</maven.deploy.plugin.version>
 		<maven.war.plugin.version>3.3.2</maven.war.plugin.version>
 		<flatten.maven.plugin.version>1.3.0</flatten.maven.plugin.version>
-		
+					
 		<!-- librerias externas -->
 		<junit.version>4.13.2</junit.version>
 		<log4j.version>2.19.0</log4j.version>
 		<slf4j.version>2.0.5</slf4j.version>
 		<jersey-media-json-jackson.version>3.1.0</jersey-media-json-jackson.version>
 		<jersey-bom.version>3.1.0</jersey-bom.version>
-		<jakarta.activation-api.version>2.1.2</jakarta.activation-api.version>
+		<jakarta.activation-api.version>2.1.0</jakarta.activation-api.version>
 		<jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
 		<jakarta.ws.rs-api.version>3.1.0</jakarta.ws.rs-api.version>
 		<jaxb.version>4.0.1</jaxb.version>
 		<jaxb-api.version>2.3.1</jaxb-api.version>
 		<mssql-jdbc.version>11.2.1.jre17</mssql-jdbc.version>
 		<jackson-datatype-jsr310.version>2.14.1</jackson-datatype-jsr310.version>
+		<jakartaee-web-api.version>10.0.0</jakartaee-web-api.version>
 	  
   </properties>
   
@@ -167,7 +168,7 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>tesis-xs-manager</artifactId>
 			<version>${revision}</version>
-		</dependency>
+		</dependency>		
 		
 		<!-- Librerias externas -->
 			<dependency>
@@ -225,7 +226,7 @@
 			    <groupId>jakarta.ws.rs</groupId>
 			    <artifactId>jakarta.ws.rs-api</artifactId>
 			    <version>${jakarta.ws.rs-api.version}</version>
-			</dependency>
+			</dependency>		
             <dependency>
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
@@ -235,7 +236,7 @@
                 <groupId>com.sun.xml.bind</groupId>
                 <artifactId>jaxb-impl</artifactId>
                 <version>${jaxb.version}</version>
-            </dependency>
+            </dependency>             
             <dependency>
                 <groupId>org.glassfish.jaxb</groupId>
                 <artifactId>jaxb-runtime</artifactId>
@@ -251,6 +252,12 @@
 			    <artifactId>jackson-datatype-jsr310</artifactId>
 			    <version>${jackson-datatype-jsr310.version}</version>
 			</dependency>
+			<dependency>
+                <groupId>jakarta.platform</groupId>
+                <artifactId>jakarta.jakartaee-web-api</artifactId>
+                <version>${jakartaee-web-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
 		
   	</dependencies>
   </dependencyManagement>

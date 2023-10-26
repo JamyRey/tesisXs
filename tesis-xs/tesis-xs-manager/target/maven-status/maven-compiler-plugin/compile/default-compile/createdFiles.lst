@@ -1,0 +1,3 @@
+org\tesis\xs\manager\imp\ClassDaoImp.class
+org\tesis\xs\manager\controller\ClassController.class
+org\tesis\xs\manager\service\BinderManager.class
