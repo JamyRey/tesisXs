@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <groupId>com.tesis</groupId>
+  <artifactId>tesis-xs</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <packaging>pom</packaging>
+  <name>tesis-xs</name>
+  <url>http://maven.apache.org</url>
+  
+  <modules>
+		<module>tesis-xs-entity</module>
+		<module>tesis-xs-config</module>
+		<module>tesis-xs-serv</module>
+		<module>tesis-xs-manager</module>
+		<module>tesis-xs-web</module>
+  </modules>
+  
+  <properties>
+	  <revision>0.0.1-SNAPSHOT</revision>
+		
+		<!-- Version de Java a la que se compila -->
+		<jdk.version>17</jdk.version>
+		<tomcat.version>10.1</tomcat.version>
+		<lifecycle.mapping.version>1.0.0</lifecycle.mapping.version>
+		
+		<!-- Propiedades para configuracion de Maven -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.version>3.10.1</maven.compiler.version>
+		<maven.deploy.plugin.version>3.0.0</maven.deploy.plugin.version>
+		<maven.war.plugin.version>3.3.2</maven.war.plugin.version>
+		<flatten.maven.plugin.version>1.3.0</flatten.maven.plugin.version>
+		
+		<!-- librerias externas -->
+		<junit.version>4.13.2</junit.version>
+		<log4j.version>2.19.0</log4j.version>
+		<slf4j.version>2.0.5</slf4j.version>
+		<jersey-media-json-jackson.version>3.1.0</jersey-media-json-jackson.version>
+		<jersey-bom.version>3.1.0</jersey-bom.version>
+		<jakarta.activation-api.version>2.1.2</jakarta.activation-api.version>
+		<jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
+		<jakarta.ws.rs-api.version>3.1.0</jakarta.ws.rs-api.version>
+		<jaxb.version>4.0.1</jaxb.version>
+		<jaxb-api.version>2.3.1</jaxb-api.version>
+		<mssql-jdbc.version>11.2.1.jre17</mssql-jdbc.version>
+		<jackson-datatype-jsr310.version>2.14.1</jackson-datatype-jsr310.version>
+	  
+  </properties>
+  
+  <build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>flatten-maven-plugin</artifactId>
+				<version>${flatten.maven.plugin.version}</version>
+				<configuration />
+				<executions>
+					<!-- enable flattening -->
+					<execution>
+						<id>flatten</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>flatten</goal>
+						</goals>
+					</execution>
+					<!-- ensure proper cleanup -->
+					<execution>
+						<id>flatten.clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven.compiler.version}</version>
+					<configuration>
+						<source>${jdk.version}</source>
+						<target>${jdk.version}</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>${maven.war.plugin.version}</version>
+					<configuration>
+						<failOnMissingWebXml>false</failOnMissingWebXml>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>${lifecycle.mapping.version}</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											flatten-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.0.1,)
+										</versionRange>
+										<goals>
+											<goal>flatten</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.javalite</groupId>
+										<artifactId>
+											activejdbc-instrumentation
+										</artifactId>
+										<versionRange>
+											[2.2,)
+										</versionRange>
+										<goals>
+											<goal>instrument</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+  
+  <dependencyManagement>
+	<dependencies>
+		
+		<dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>tesis-xs-config</artifactId>
+            <version>${revision}</version>
+        </dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tesis-xs-entity</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tesis-xs-serv</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tesis-xs-manager</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		
+		<!-- Librerias externas -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-api</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-core</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-slf4j-impl</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.jersey.media</groupId>
+				<artifactId>jersey-media-json-jackson</artifactId>
+				<version>${jersey-media-json-jackson.version}</version>
+			</dependency>
+			<dependency>
+                <groupId>org.glassfish.jersey</groupId>
+                <artifactId>jersey-bom</artifactId>
+                <version>${jersey-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.activation</groupId>
+                <artifactId>jakarta.activation-api</artifactId>
+                <version>${jakarta.activation-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+			    <groupId>jakarta.servlet</groupId>
+			    <artifactId>jakarta.servlet-api</artifactId>
+			    <version>${jakarta.servlet-api.version}</version>
+			    <scope>provided</scope>
+			</dependency>
+			<dependency>
+			    <groupId>jakarta.ws.rs</groupId>
+			    <artifactId>jakarta.ws.rs-api</artifactId>
+			    <version>${jakarta.ws.rs-api.version}</version>
+			</dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+				<groupId>com.microsoft.sqlserver</groupId>
+				<artifactId>mssql-jdbc</artifactId>
+				<version>${mssql-jdbc.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>com.fasterxml.jackson.datatype</groupId>
+			    <artifactId>jackson-datatype-jsr310</artifactId>
+			    <version>${jackson-datatype-jsr310.version}</version>
+			</dependency>
+		
+  	</dependencies>
+  </dependencyManagement>
+  
+</project>
