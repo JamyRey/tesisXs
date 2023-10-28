@@ -2,12 +2,12 @@
 <!DOCTYPE xml>
 <Context path='/tesis-xs' debug='5' reloadable='true' crossContext='true'>
 
-<!-- <Resource name='jdbc/tesisxs' auth='Container' type='javax.sql.DataSource' 
-	username='sa' password='JM97jm00' driverClassName='com.microsoft.sqlserver.jdbc.SQLServerDriver' 
-	url='jdbc:sqlserver://localhost:1433;databaseName=TesisV1;encrypt=true;trustServerCertificate=true;' maxActive='100' 
-	maxIdle='30' maxWait='10000' removeAbandoned='true' removeAbandonedTimeout='60'/> -->
 <Resource name='jdbc/tesisxs' auth='Container' type='javax.sql.DataSource' 
+	username='sa' password='JM9700jm' driverClassName='com.microsoft.sqlserver.jdbc.SQLServerDriver' 
+	url='jdbc:sqlserver://localhost:1433;databaseName=TesisV1;encrypt=true;trustServerCertificate=true;' maxActive='100' 
+	maxIdle='30' maxWait='10000' removeAbandoned='true' removeAbandonedTimeout='60'/>
+<!-- <Resource name='jdbc/tesisxs' auth='Container' type='javax.sql.DataSource' 
 		username='PowerUser' password='k8a3z7up' driverClassName='com.microsoft.sqlserver.jdbc.SQLServerDriver' 
 		url='jdbc:sqlserver://192.168.50.246:1433;databaseName=XETUXPOS_MTM_JA;' maxActive='100' 
-		maxIdle='30' maxWait='10000' removeAbandoned='true' removeAbandonedTimeout='60'/>
+		maxIdle='30' maxWait='10000' removeAbandoned='true' removeAbandonedTimeout='60'/> -->
 </Context>

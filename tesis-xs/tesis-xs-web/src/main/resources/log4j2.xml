@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration status="DEBUG" monitorInterval="30">
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+        <RollingRandomAccessFile
+                 name="RollingRandomAccessFileDebug"
+                 fileName="${sys:catalina.base}/logs/tesis-xs.log"
+                 filePattern="logs/$${date:yyyy-MM}/xs-%d{MM-dd-yyyy}-%i.log.gz">
+
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} [%t] %-5level %logger{36} - %msg%n</Pattern>
+            </PatternLayout>
+
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="250 MB" />
+            </Policies>
+        </RollingRandomAccessFile>
+
+    </appenders>
+    <loggers>
+        <root level="DEBUG"> <!-- CAMBIAR A INFO PARA PRODUCCION -->
+            <appender-ref ref="Console" /> <!-- ELIMINAR PARA PRODUCCION -->
+            <appender-ref ref="RollingRandomAccessFileDebug"/> 
+        </root>	 
+    </loggers>
+</configuration>
