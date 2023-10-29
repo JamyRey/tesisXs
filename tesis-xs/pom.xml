@@ -16,6 +16,7 @@
 		<module>tesis-xs-serv</module>
 		<module>tesis-xs-manager</module>
 		<module>tesis-xs-web</module>
+		<module>tesis-xs-exception</module>
   </modules>
   
   <properties>
@@ -169,6 +170,11 @@
 			<artifactId>tesis-xs-manager</artifactId>
 			<version>${revision}</version>
 		</dependency>		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tesis-xs-exception</artifactId>
+			<version>${revision}</version>
+		</dependency>	
 		
 		<!-- Librerias externas -->
 			<dependency>

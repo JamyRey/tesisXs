@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.glassfish.jersey.process.internal.RequestScoped;
 import org.tesis.xs.entity.ClassEntity;
 import org.tesis.xs.manager.imp.ClassDaoImp;
+import org.tesis.xs.manager.service.AnalyzerException;
 import org.tesis.xs.serv.ClassDao;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,7 +37,7 @@ public class ClassController {
 			return Response.ok(dao.initialData()).build();
 		} catch (Throwable e) {
 			// return Response.serverError().build();
-            return Response.status(Status.UNAUTHORIZED).entity(e).build();
+            return AnalyzerException.analyzer(e, this.getClass());
         }
     }
 	
@@ -51,7 +52,7 @@ public class ClassController {
             log.debug(request.getPathInfo());
             return Response.ok(dao.createClass(entity)).build();
         }  catch (Throwable e) {
-            return Response.status(Status.FORBIDDEN).entity(e).build();
+            return AnalyzerException.analyzer(e, this.getClass());
         }
     }
 	
@@ -65,8 +66,8 @@ public class ClassController {
         try {
             log.debug(request.getPathInfo());
             return Response.ok(dao.updateClass(entity)).build();
-        }  catch (Throwable e) {
-            return Response.status(Status.FORBIDDEN).entity(e).build();
+        }  catch (Throwable e) {        	
+            return AnalyzerException.analyzer(e, this.getClass());
         }
     }
 	

@@ -15,6 +15,9 @@ import org.apache.logging.log4j.Logger;
 import org.tesis.xs.config.db.DriverManager;
 import org.tesis.xs.entity.ClassEntity;
 import org.tesis.xs.entity.full.ClassFullEntity;
+import org.tesis.xs.exception.BasicException;
+import org.tesis.xs.exception.MasterException;
+import org.tesis.xs.exception.MasterExceptionEnum;
 import org.tesis.xs.serv.ClassDao;
 
 public class ClassDaoImp implements ClassDao{
@@ -86,10 +89,14 @@ public class ClassDaoImp implements ClassDao{
 		}
 	}
 	@Override
-	public ClassEntity createClass(ClassEntity entity) throws Throwable {
+	public ClassEntity createClass(ClassEntity entity) throws BasicException,Throwable {
 
 		try(Connection conn = DriverManager.getConnection()){
 
+			if(existClassName(entity.getName(), conn)) {
+				throw MasterExceptionEnum.nameAlreadyExists.exception();
+			}
+			
 			String sql = "INSERT INTO Class "
 					+ " ( name, status_id, is_active) "
 					+ " VALUES(?, ?, ?);";
@@ -108,14 +115,17 @@ public class ClassDaoImp implements ClassDao{
 					}
 				}
 				
-			}catch (Throwable e) {        	
-				throw new Throwable("Error creando clase ");
 			}
 
-
+			return entity;
+		}catch (MasterException e) {        	
+			throw e;
+		}catch (BasicException e) {        	
+			throw e;
+		}catch (Throwable e) {        	
+			throw new Throwable("Error creando clase");
 		}
 
-		return entity;
 	}
 
 	@Override
@@ -141,10 +151,52 @@ public class ClassDaoImp implements ClassDao{
 				throw new Throwable("Error actualizando clase ");
 			}
 
-
 		}
 
 		return entity;
+	}
+	
+	public ClassEntity getClassById(int id) throws Throwable {
+		
+		try(Connection conn = DriverManager.getConnection()){
+			
+			ClassEntity classEntity = getClassById(id, conn);
+			
+			
+			
+			return classEntity;
+			
+		}catch (Throwable e) {
+			throw new Throwable("Error consultando clase por id");
+		}
+		
+	}
+	
+	private ClassEntity getClassById(int id, Connection conn) throws Throwable {
+
+		StringBuilder query = new StringBuilder("SELECT id, name, status_id, is_active ")
+				.append(" FROM Class ")
+				.append(" WHERE id = ?");
+
+		try(PreparedStatement pstm = conn.prepareStatement(query.toString())) {
+
+
+			try(ResultSet rs = pstm.executeQuery()){
+				if(rs.next()) {
+					ClassEntity entity = new ClassEntity();
+					entity.setId(rs.getInt("id"));
+					entity.setName(rs.getString("name"));
+					entity.setStatus(rs.getInt("status_id"));
+					entity.setActiveClass(rs.getBoolean("is_active"));
+
+					return entity;
+				}else {
+					throw new Throwable("No encontrada la clase");
+				}
+			}
+		}catch (Throwable e) {
+			throw new Throwable("Error consultando clase por id");
+		}
 	}
 
 }

@@ -2,6 +2,8 @@ package org.tesis.xs.entity;
 
 import java.io.Serializable;
 
+import org.tesis.xs.enums.ScoresTypes;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -9,26 +11,26 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @SuppressWarnings("serial")
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SessionScores implements Serializable{
+public class SessionScore implements Serializable{
 	
-	private int type;
+	private ScoresTypes type;
 	private boolean valid;
 	
-	public SessionScores() {
+	public SessionScore() {
 		super();
 	}
 	
-	public SessionScores(int type, boolean valid) {
+	public SessionScore(ScoresTypes type, boolean valid) {
 		super();
 		this.type = type;
 		this.valid = valid;
 	}
 
-	public int getType() {
+	public ScoresTypes getType() {
 		return type;
 	}
 	
-	public void setType(int type) {
+	public void setType(ScoresTypes type) {
 		this.type = type;
 	}
 	
