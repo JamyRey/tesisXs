@@ -48,7 +48,7 @@
 		<mssql-jdbc.version>11.2.1.jre17</mssql-jdbc.version>
 		<jackson-datatype-jsr310.version>2.14.1</jackson-datatype-jsr310.version>
 		<jakartaee-web-api.version>10.0.0</jakartaee-web-api.version>
-	  
+    	<bouncycastle.version>1.70</bouncycastle.version>
   </properties>
   
   <build>
@@ -264,6 +264,11 @@
                 <version>${jakartaee-web-api.version}</version>
                 <scope>provided</scope>
             </dependency>
+            <dependency>
+    			<groupId>org.bouncycastle</groupId>
+   				 <artifactId>bcprov-jdk15on</artifactId>
+   				 <version>${bouncycastle.version}</version>
+			</dependency>
 		
   	</dependencies>
   </dependencyManagement>
