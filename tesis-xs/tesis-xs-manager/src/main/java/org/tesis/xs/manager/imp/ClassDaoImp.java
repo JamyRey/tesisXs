@@ -3,17 +3,16 @@ package org.tesis.xs.manager.imp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.NamingException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.tesis.xs.config.db.DriverManager;
 import org.tesis.xs.entity.ClassEntity;
+import org.tesis.xs.entity.GameSession;
 import org.tesis.xs.entity.full.ClassFullEntity;
 import org.tesis.xs.exception.BasicException;
 import org.tesis.xs.exception.MasterException;
@@ -43,7 +42,7 @@ public class ClassDaoImp implements ClassDao{
 	private List<ClassEntity> getClassList(Connection conn) throws Throwable {
 
 		StringBuilder query = new StringBuilder("SELECT id, name, status_id, is_active ")
-				.append(" FROM Class");
+				.append(" FROM Class WHERE status_id <> 0");
 
 		try(PreparedStatement pstm = conn.prepareStatement(query.toString())) {
 
@@ -72,12 +71,14 @@ public class ClassDaoImp implements ClassDao{
 
 	}
 	
-	private boolean existClassName(String name,Connection con) throws Throwable{
+	private boolean existClassName(ClassEntity entity,Connection con) throws Throwable{
 
-		String query = "  SELECT ID FROM  T_SYS_COMPANY_GROUP WHERE XETUX_CODE = ?";
+		String query = "  SELECT id, name FROM  Class "
+				+ "WHERE status_id <> 0 AND id <> ? AND name = ?";
 		try(PreparedStatement pstm = con.prepareStatement(query);){
 
-			pstm.setString(1, name);
+			pstm.setInt(1, entity.getId());
+			pstm.setString(2, entity.getName());
 
 			try(ResultSet rs = pstm.executeQuery();){
 
@@ -93,7 +94,7 @@ public class ClassDaoImp implements ClassDao{
 
 		try(Connection conn = DriverManager.getConnection()){
 
-			if(existClassName(entity.getName(), conn)) {
+			if(existClassName(entity, conn)) {
 				throw MasterExceptionEnum.nameAlreadyExists.exception();
 			}
 			
@@ -129,9 +130,13 @@ public class ClassDaoImp implements ClassDao{
 	}
 
 	@Override
-	public ClassEntity updateClass(ClassEntity entity) throws Throwable {
+	public ClassEntity updateClass(ClassEntity entity) throws BasicException {
 
 		try(Connection conn = DriverManager.getConnection()){
+			
+			if(existClassName(entity, conn)) {
+				throw MasterExceptionEnum.nameAlreadyExists.exception();
+			}
 
 			String sql = "UPDATE Class "
 					+ " SET name=?, status_id=?, is_active=? "
@@ -143,31 +148,35 @@ public class ClassDaoImp implements ClassDao{
 				pstm.setInt(2, entity.getStatus());
 				pstm.setBoolean(3, entity.isActiveClass());
 				pstm.setInt(4, entity.getId());
-					
-				pstm.execute();
-				
-				
-			}catch (Throwable e) {        	
-				throw new Throwable("Error actualizando clase ");
-			}
 
+				pstm.execute();
+			}
+		}catch (MasterException e) {        	
+			throw e;
+		}catch (BasicException e) {        	
+			throw e;
+		}catch (Throwable e) {        	
+			throw new BasicException("Error actualizando clase ");
 		}
+
+
 
 		return entity;
 	}
 	
-	public ClassEntity getClassById(int id) throws Throwable {
+	@Override
+	public ClassEntity getClassById(int id) throws BasicException {
 		
 		try(Connection conn = DriverManager.getConnection()){
 			
 			ClassEntity classEntity = getClassById(id, conn);
-			
-			
-			
+	
 			return classEntity;
 			
+		}catch (BasicException e) {        	
+			throw e;
 		}catch (Throwable e) {
-			throw new Throwable("Error consultando clase por id");
+			throw new BasicException("Error consultando clase por id");
 		}
 		
 	}
@@ -179,7 +188,7 @@ public class ClassDaoImp implements ClassDao{
 				.append(" WHERE id = ?");
 
 		try(PreparedStatement pstm = conn.prepareStatement(query.toString())) {
-
+			pstm.setInt(1, id);
 
 			try(ResultSet rs = pstm.executeQuery()){
 				if(rs.next()) {
@@ -196,6 +205,100 @@ public class ClassDaoImp implements ClassDao{
 			}
 		}catch (Throwable e) {
 			throw new Throwable("Error consultando clase por id");
+		}
+	}
+	
+	@Override
+	public void updateActiveClass(ClassEntity entity) throws BasicException {
+
+		try(Connection conn = DriverManager.getConnection()){
+			if(entity.isActiveClass())
+				deActiveAllClass(entity);
+			else {
+				createGamesession(entity);
+			}
+			String sql = "UPDATE Class "
+					+ " SET is_active=? "
+					+ " WHERE id=?;";
+
+			try(PreparedStatement pstm = conn.prepareStatement(sql)) {
+				pstm.setBoolean(1, entity.isActiveClass()?false:true);
+				pstm.setInt(2, entity.getId());
+				pstm.execute();
+			}
+			
+		}catch (BasicException e) {        	
+			throw e;
+		}catch (Throwable e) {        	
+			throw new BasicException("Error actualizando clase ");
+		}
+	}
+	
+	private void createGamesession(ClassEntity entity) throws Throwable{
+		try(Connection conn = DriverManager.getConnection()){
+			String sql = "INSERT INTO  Game_session "
+					+ " (game_id, start_time) "
+					+ " VALUES(?, getdate());";
+			GameSession session = new GameSession();
+			try(PreparedStatement pstm = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+				pstm.setInt(1, entity.getGame());
+
+				pstm.execute();
+
+
+				try (ResultSet rs = pstm.getGeneratedKeys()) {
+					if (rs.next()) {
+						session.setId(rs.getInt(1));
+					}
+				}	
+			}
+
+			sql = "INSERT INTO  Class_by_game_session "
+					+ " (class_id, game_session_id) "
+					+ " VALUES(?, ?);";
+
+			try(PreparedStatement pstm = conn.prepareStatement(sql)) {
+
+				pstm.setInt(1, entity.getId());
+				pstm.setInt(2, session.getId());
+				pstm.executeUpdate();				
+
+			}
+
+		}catch (Throwable e) {        	
+			throw new BasicException("Error creando sesion de juego ");
+		}
+
+	}
+
+
+	private void deActiveAllClass(ClassEntity entity) throws Throwable {
+
+		try(Connection conn = DriverManager.getConnection()){
+			
+			String sql = "UPDATE Class "
+					+ " SET is_active=0 ";
+
+			try(PreparedStatement pstm = conn.prepareStatement(sql)) {
+				pstm.execute();
+			}
+			
+			sql = "UPDATE gs "
+					+ " SET end_time=getdate() "
+					+ " FROM Game_session as gs"
+					+ " INNER JOIN Class_by_game_session as cgs ON gs.id = cgs.game_session_id"
+					+ " where cgs.class_id = ?";
+
+			try(PreparedStatement pstm = conn.prepareStatement(sql)) {
+				
+				pstm.setInt(1, entity.getId());
+				
+				pstm.execute();
+			}
+			
+		}catch (Throwable e) {        	
+			throw new BasicException("Error desactivando clases y sesiones de juego ");
 		}
 	}
 

@@ -1,5 +1,14 @@
 package org.tesis.xs.serv;
 
-public interface StudentDao {
+import org.tesis.xs.entity.StudentEntity;
+import org.tesis.xs.entity.full.StudentFullEntity;
+import org.tesis.xs.exception.BasicException;
 
+public interface StudentDao {
+	
+	StudentFullEntity initialData() throws BasicException;
+	StudentEntity createStudent(StudentEntity entity) throws BasicException;
+	StudentEntity updateStudent(StudentEntity entity) throws BasicException;
+	StudentEntity getStudentById(int id) throws BasicException;
+	
 }

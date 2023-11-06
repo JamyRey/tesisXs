@@ -15,15 +15,13 @@ import org.tesis.xs.exception.IdentityNotfoundException;
 import org.tesis.xs.exception.MasterException;
 import org.tesis.xs.exception.MasterExceptionEnum;
 import org.tesis.xs.serv.SessionDao;
-
-import jakarta.inject.Inject;
+import org.tesis.xs.serv.UserTokenDao;
 
 public class SessionDaoImp implements SessionDao {
 
     //@Inject private TokenDao tokenDao;
     
-    //TODO cambiar por inject
-    //private UserTokenDao tokenDao = new UserTokenDaoImp();
+    private UserTokenDao tokenDao = new UserTokenDaoImp();
     
     @Override
     public SessionEntity login(LoginEntity login) throws BasicException, IdentityNotfoundException {
@@ -34,10 +32,9 @@ public class SessionDaoImp implements SessionDao {
     	try (Connection conn = DriverManager.getConnection()){
     	    
     	    String sql = 
-                    " SELECT tsu.ID, tsu.FIRST_NAME, tsu.LAST_NAME, "
-                  + "     tsu.EMAIL, tsu.STATUS_ID, tsu.REGISTRATION_COMPLETED  "
-                  + " FROM T_SYS_USER tsu  "
-                  + " WHERE tsu.EMAIL = ? AND tsu.PASSWORD = ?";
+                    " SELECT ul.id,  ul.userName, ul.status_id  "
+                  + " FROM User_login ul  "
+                  + " WHERE ul.userName = ? AND ul.password = ?";
     	    
     	    try(PreparedStatement pstm = conn.prepareStatement(sql)) {
     	        
@@ -49,19 +46,19 @@ public class SessionDaoImp implements SessionDao {
     	                
     	                if(rs.getInt("STATUS_ID") != 1/**MasterStatusEnum.active.getId()**/)
     	                	throw MasterExceptionEnum.recordDisable.exception(); 
-    	                	//throw new XIdentityNotAvailableException("Usuario inhabilidado");
+    	                	
     	                
-    	                session = new SessionEntity();    	             
+    	                session = new SessionEntity();
+    	                session.setUserId(rs.getInt("id"));
+    	                session.setUserName(rs.getString("userName"));
     	                session.setTimeOutSession(60*60);
-    	                // TODO Obtener de base de datos
     	                session.setLocale(new Locale("es", "VE"));
     	                session.setTimezone(TimeZone.getTimeZone("America/Caracas"));
-    	                //session.setToken(tokenDao.createToken(session.getUserId(), conn));
+    	                session.setToken(tokenDao.createToken(session.getUserId(), conn));
     	                
     	            }
     	            else 
-    	                throw MasterExceptionEnum.recordNotFound.exception(); 
-    	                //new XIdentityNotfoundException("Usuario no encontrado");
+    	                throw MasterExceptionEnum.recordNotFound.exception();     
     	        }
     	        
     	    }

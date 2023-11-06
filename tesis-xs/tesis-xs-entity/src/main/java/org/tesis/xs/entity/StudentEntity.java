@@ -12,7 +12,11 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StudentEntity extends BasicEntity implements Serializable{
 
+	private String firstName;
+	private String lastName;
+	
 	private int studentId;
+	private List<ClassEntity> classes;
 	private List<GameSession> sessions;
 	
 	public int getStudentId() {
@@ -29,6 +33,30 @@ public class StudentEntity extends BasicEntity implements Serializable{
 	
 	public void setSessions(List<GameSession> sessions) {
 		this.sessions = sessions;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public List<ClassEntity> getClasses() {
+		return classes;
+	}
+
+	public void setClasses(List<ClassEntity> classes) {
+		this.classes = classes;
 	}
 	
 }

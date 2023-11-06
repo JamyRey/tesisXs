@@ -2,6 +2,7 @@ package org.tesis.xs.entity;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -13,25 +14,10 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GameSession extends BasicEntity implements Serializable{
 
-	private Instant startAt;
-	private Instant endendAt;
+	private ClassEntity classE;
+	private LocalDateTime startAt;
+	private LocalDateTime endendAt;
 	private List<SessionScore> scores;
-	
-	public Instant getStartAt() {
-		return startAt;
-	}
-	
-	public void setStartAt(Instant startAt) {
-		this.startAt = startAt;
-	}
-
-	public Instant getEndendAt() {
-		return endendAt;
-	}
-
-	public void setEndendAt(Instant endendAt) {
-		this.endendAt = endendAt;
-	}
 
 	public List<SessionScore> getScores() {
 		return scores;
@@ -39,6 +25,30 @@ public class GameSession extends BasicEntity implements Serializable{
 
 	public void setScores(List<SessionScore> scores) {
 		this.scores = scores;
+	}
+
+	public LocalDateTime getStartAt() {
+		return startAt;
+	}
+
+	public void setStartAt(LocalDateTime startAt) {
+		this.startAt = startAt;
+	}
+
+	public LocalDateTime getEndendAt() {
+		return endendAt;
+	}
+
+	public void setEndendAt(LocalDateTime endendAt) {
+		this.endendAt = endendAt;
+	}
+
+	public ClassEntity getClassE() {
+		return classE;
+	}
+
+	public void setClassE(ClassEntity classE) {
+		this.classE = classE;
 	}
 	
 }

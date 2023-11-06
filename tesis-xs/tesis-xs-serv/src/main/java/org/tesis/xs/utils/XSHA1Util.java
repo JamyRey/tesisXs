@@ -3,7 +3,6 @@ package org.tesis.xs.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,7 @@ public class XSHA1Util extends XGenerateSummary {
   private static Logger log = LoggerFactory.getLogger(XSHA1Util.class);
   
   public static void main(String[] args) throws BasicException {
-    System.out.println(toSHA1(new File("/Users/jperaza/Desktop/sokai/logo_sokai.png")));
+    //System.out.println(toSHA1(new File("/Users/jperaza/Desktop/sokai/logo_sokai.png")));
   }
   
   public static String toSHA1(File file) throws BasicException {

@@ -31,7 +31,6 @@ public class DriverManager {
 		try {
 		dataSource = (DataSource)(new InitialContext()).lookup("java:comp/env/" + jndi);
 		}catch (NamingException e) {
-			// TODO: handle exception
 		}
 		return dataSource;
 	}

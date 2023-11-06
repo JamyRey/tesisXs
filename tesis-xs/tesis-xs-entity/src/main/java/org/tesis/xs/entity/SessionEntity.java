@@ -16,6 +16,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SessionEntity implements Serializable {
 
+	private int userId;
+	private String 	 userName;
     private String   token;
     private Locale   locale;
     private TimeZone timezone;
@@ -55,6 +57,22 @@ public class SessionEntity implements Serializable {
 
 	public void setTimeOutSession(int timeOutSession) {
 		this.timeOutSession = timeOutSession;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
     
 }
