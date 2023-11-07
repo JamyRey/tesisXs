@@ -297,6 +297,14 @@ public class ClassDaoImp implements ClassDao{
 				pstm.execute();
 			}
 			
+			sql = "UPDATE Game_session "
+					+ " SET end_time= case when end_time is null then getdate() else end_time end";
+
+			try(PreparedStatement pstm = conn.prepareStatement(sql)) {
+				
+				pstm.execute();
+			}
+			
 		}catch (Throwable e) {        	
 			throw new BasicException("Error desactivando clases y sesiones de juego ");
 		}

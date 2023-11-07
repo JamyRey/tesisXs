@@ -16,13 +16,11 @@ import org.tesis.xs.entity.ClassEntity;
 import org.tesis.xs.entity.GameSession;
 import org.tesis.xs.entity.SessionScore;
 import org.tesis.xs.entity.StudentEntity;
-import org.tesis.xs.entity.full.ClassFullEntity;
 import org.tesis.xs.entity.full.StudentFullEntity;
 import org.tesis.xs.enums.ScoresTypes;
 import org.tesis.xs.exception.BasicException;
 import org.tesis.xs.exception.MasterException;
 import org.tesis.xs.exception.MasterExceptionEnum;
-import org.tesis.xs.serv.ClassDao;
 import org.tesis.xs.serv.StudentDao;
 
 public class StudentDaoImp implements StudentDao{
@@ -222,7 +220,7 @@ public class StudentDaoImp implements StudentDao{
 	
 	private List<GameSession> getGameSessions(int id, Connection conn) throws Throwable {
 		List<GameSession> list = new ArrayList<GameSession>();
-		StringBuilder query = new StringBuilder("SELECT gs.id, gs.game_id, gs.start_time, gs.end_time, c.id cid, c.name ")
+		StringBuilder query = new StringBuilder("SELECT DISTINCT gs.id, gs.game_id, gs.start_time, gs.end_time, c.id cid, c.name ")
 				.append(" FROM Game_session gs ")
 				.append(" INNER JOIN Session_scores ss ON gs.id = ss.game_session_id ")
 				.append(" INNER JOIN Class_by_game_session cgs ON gs.id = cgs.game_session_id")
