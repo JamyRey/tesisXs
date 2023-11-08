@@ -10,5 +10,6 @@ public interface StudentDao {
 	StudentEntity createStudent(StudentEntity entity) throws BasicException;
 	StudentEntity updateStudent(StudentEntity entity) throws BasicException;
 	StudentEntity getStudentById(int id) throws BasicException;
+	void deleteStudent(int id) throws BasicException;
 	
 }

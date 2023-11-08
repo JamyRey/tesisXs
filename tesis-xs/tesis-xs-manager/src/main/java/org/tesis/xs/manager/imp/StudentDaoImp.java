@@ -310,5 +310,29 @@ public class StudentDaoImp implements StudentDao{
 		}
 
 	}
+	
+	@Override
+    public void deleteStudent(int id) throws BasicException {
+
+    	try(Connection conn = DriverManager.getConnection()) {
+
+    		String sql = 
+    				" UPDATE Students "
+    						+ " SET status_id = 0 "
+    						+ " WHERE ID = ?";
+
+    		try(PreparedStatement pstm = conn.prepareStatement(sql)) {
+
+    			pstm.setInt(1, id);
+
+    			pstm.execute();
+
+    		}
+    	}
+    	catch (Throwable e) {
+    		throw new BasicException("Error borrando estudiante. (Id = "+id+").",e);
+    	}
+
+    }
 
 }

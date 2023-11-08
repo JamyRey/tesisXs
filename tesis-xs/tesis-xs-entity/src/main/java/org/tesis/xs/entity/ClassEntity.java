@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class ClassEntity extends BasicEntity implements Serializable {
 
 	private boolean activeClass;
-	private int game;
+	private int game =-1;
+	private String gameName;
 	private List<BasicEntity> students;
 	
 	public ClassEntity() {
@@ -42,6 +43,14 @@ public class ClassEntity extends BasicEntity implements Serializable {
 
 	public void setGame(int game) {
 		this.game = game;
+	}
+
+	public String getGameName() {
+		return gameName;
+	}
+
+	public void setGameName(String gameName) {
+		this.gameName = gameName;
 	}
 	
 	

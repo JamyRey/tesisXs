@@ -11,7 +11,7 @@ public enum ScoresTypes {
 	sum    (1, "Suma"),
 	sub    (2, "Resta"),
 	mul    (3, "Multiplicacion"), 
-	div    (4, "división"),
+	div    (4, "División"),
 	;
 	
 	public final int id;

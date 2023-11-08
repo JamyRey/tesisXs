@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Locale;
 import java.util.TimeZone;
-import java.util.UUID;
 
 import org.tesis.xs.config.db.DriverManager;
 import org.tesis.xs.entity.LoginEntity;

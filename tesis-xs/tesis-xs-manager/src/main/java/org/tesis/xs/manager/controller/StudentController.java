@@ -11,6 +11,7 @@ import org.tesis.xs.serv.StudentDao;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
@@ -87,6 +88,26 @@ public class StudentController {
             log.debug(request.getPathInfo());
             log.debug(request.getQueryString());
             return Response.ok(dao.getStudentById(id)).build();
+        } catch (MasterException e){
+			log.info(e);
+        	return Response.status(Status.FORBIDDEN).entity(e.getEntity()).build();
+		} catch (Throwable e) {
+            return AnalyzerException.analyzer(e, this.getClass());
+        }
+    }
+	
+	@DELETE
+    @Path("/deleteStudent")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteStudent(
+            @Context HttpServletRequest request, 
+            @QueryParam("id") int id) {
+        try {
+            log.debug(request.getPathInfo());
+            log.debug(request.getQueryString());
+            dao.deleteStudent(id);
+            return Response.ok().build();
         } catch (MasterException e){
 			log.info(e);
         	return Response.status(Status.FORBIDDEN).entity(e.getEntity()).build();
